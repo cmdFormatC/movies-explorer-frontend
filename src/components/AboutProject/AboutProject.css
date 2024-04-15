@@ -1,0 +1,167 @@
+.about {
+  background-color: #202020;
+  display: flex;
+  padding: 110px 0;
+}
+
+.about__title {
+  font-size: 22px;
+  line-height: 26.63px;
+  font-weight: 400;
+  color: #FFFFFF;
+  display: block;
+  padding-bottom: 23px;
+  border-bottom: 1px solid #DADADA;
+  margin: 0;
+}
+
+.about__content {
+  display: flex;
+  flex-direction: column;
+  gap: 110px;
+  margin-top: 70px;
+}
+
+.about__desc {
+  display: flex;
+  gap: 40px;
+}
+
+.about__col {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  max-width: 550px;
+}
+
+.about__subtitle {
+  font-size: 20px;
+  line-height: 24.2px;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.about__paragraph {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.about__chart {
+  display: flex;
+}
+
+.about__chart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.about__time {
+  display: block;
+  font-size: 14px;
+  line-height: 16.94px;
+  font-weight: 400;
+  text-align: center;
+  padding: 9px 0;
+}
+
+.about__time_back {
+  color: #000000;
+  background-color: #3DDC84;
+  width: 228px;
+}
+
+.about__time_front {
+  color: #FFFFFF;
+  background-color: #303030;
+  width: 912px;
+}
+
+.about__area {
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+  color: #8B8B8B;
+}
+
+@media screen and (max-width: 1279px) {
+  .about__time_back {
+    width: 18.22916666666667vw;
+  }
+  
+  .about__time_front {
+    width: 68.75vw;
+  }
+
+  .about__desc {
+    gap: 30px;
+  }
+
+  .about__col {
+    gap: 22px;
+    max-width: 41.53645833333333vw;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .about__title {
+    font-size: 18px;
+    line-height: 21.78px;
+    padding-bottom: 28px;
+  }
+  .about {
+    padding: 70px 0;
+  }
+
+  .about__desc {
+    flex-direction: column;
+    justify-content: center;
+    gap: 56px;
+  }
+
+  .about__col {
+    gap: 16px;
+    max-width: 100%;
+  }
+
+  .about__subtitle {
+    font-size: 18px;
+    line-height: 21.78px;
+  }
+  
+  .about__paragraph {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about__content {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    margin-top: 60px;
+  }
+
+  .about__time {
+    font-size: 11px;
+    line-height: 13.31px;
+    padding: 11px 0;
+  }
+
+  .about__time_back {
+    width: 31.25vw;
+  }
+  
+  .about__time_front {
+    width: 57.5vw;
+  }
+
+  .about__area {
+    font-size: 11px;
+    line-height: 13.31px;
+  }
+}

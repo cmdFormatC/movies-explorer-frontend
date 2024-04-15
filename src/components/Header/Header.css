@@ -1,0 +1,155 @@
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%
+}
+
+.header__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1140px;
+  margin: 18px auto;
+}
+
+.header__col_logo {
+  width: 38px;
+  height: 38px;
+}
+
+.header__logo {
+  width: 100%;
+  height: 100%;
+}
+
+.header__col_menu {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 16px;
+}
+
+.header__link {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.header__col_authentication {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header__button {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 8px 20px;
+}
+
+.header__button_flooded {
+  color: #000000;
+  background-color: #3DDC84;
+  border-radius: 3px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 40px;
+  width: 100px;
+  height: 32px;
+  padding: 3px;
+  text-decoration: none;
+}
+
+.header__profile {
+  box-shadow: 0px 3px 14px 0px #00000014;
+}
+
+.profile__text {
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.profile__overlay {
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile__icon {
+  width: 10.38px;
+  height: 10.67px;
+}
+
+.profile__overlay_blue {
+  background-color: #0F4157;
+}
+
+.profile__overlay_dark {
+  background-color: #313131;
+}
+
+.header__profile-menu {
+  display: none;
+  width: 44px;
+  height: 44px;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.header__icon {
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 1279px) {
+  .header__row {
+    width: 92.1875vw;
+  }
+
+  .header__profile-menu {
+    display: flex;
+  }
+
+  .header__profile {
+    display: none;
+  }
+  .header__col_menu {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header__row {
+    width: 93.75vw;
+  }
+
+  .header__button {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+
+  .header__profile-menu {
+    width: 40px;
+    height: 43px;
+  }
+}
