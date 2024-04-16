@@ -28,9 +28,6 @@
   box-sizing: border-box;
 }
 
-.form-item__input:focus {
-  outline: none;
-}
 
 .form-item__input_error {
   color: #EE3465;

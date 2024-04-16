@@ -7,7 +7,7 @@ export default function SearchForm() {
   return (
     <form className='form wrapper wrapper_movies'>
       <div className='form__input-container'>
-        <input placeholder='Фильм' className='form__input' type="text" />
+        <input required={true} placeholder='Фильм' className='form__input' type="text" />
         <button className='form__submit-button' type='submit'>
           <div className='form__submit-circle'>
             <img className='form__icon' src={arrow} alt="Поиск" />

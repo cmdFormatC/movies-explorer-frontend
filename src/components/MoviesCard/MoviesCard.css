@@ -61,6 +61,18 @@
   background-color: #2BE080;
 }
 
+.card__delete-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  height: 16px;
+  width: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
 @media screen and (max-width: 1279px) {
   .card {
     width: 339px;

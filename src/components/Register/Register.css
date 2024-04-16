@@ -83,6 +83,10 @@
   flex-direction: column;
 }
 
+.form-button:hover {
+  opacity: 0.8;
+}
+
 @media screen and (max-width: 1279px) {
   .register {
     padding: 232px 0;

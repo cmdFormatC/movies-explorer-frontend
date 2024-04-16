@@ -26,9 +26,9 @@ export default function Header({ isAuth, isMain }) {
   return (
     <header className='header'>
       <div className='header__row'>
-        <div className='header__col header__col_logo'>
+        <Link to="/" className='header__col header__col_logo'>
           <img className='header__logo' alt="Логотип" src={logo} />
-        </div>
+        </Link>
         {
           isAuth ?  
             <menu className='header__col header__col_menu'>

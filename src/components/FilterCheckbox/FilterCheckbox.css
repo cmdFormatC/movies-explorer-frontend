@@ -13,7 +13,7 @@
   padding: 0 2px;
   border: 0;
   border-radius: 20px;
-  background-color: #3DDC84;
+  background-color: #343434;
   cursor: pointer;
 }
 
@@ -24,11 +24,16 @@
   left: 2px;
   width: 16px;
   height: 16px;
-  background-color: #FFFFFF;
+  background-color: #A0A0A0;
   border-radius: 50%;
   transition: left 0.3s;
 }
 
+.filter__input:checked + .filter__label {
+  background-color: #2BE080;
+}
+
 .filter__input:checked + .filter__label::before {
   left: 22px;
+  background-color: #FFFFFF;
 }
