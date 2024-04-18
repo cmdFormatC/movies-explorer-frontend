@@ -1,0 +1,110 @@
+.profile-page {
+  background-color: #202020;
+  padding: 148px 0 70px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.profile-page__greeting {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 29.05px;
+  text-align: center;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.profile-page__user {
+  display: flex;
+  flex-direction: column;
+  margin-top: 123px;
+  width: 410px;
+}
+
+.profile-page__params {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 13.31px;
+  text-align: left;
+  color: #FFFFFF;
+}
+
+.profile-page__params_value {
+  font-weight: 400;
+}
+
+.profile-page__user-data {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+}
+
+.profile-page__user-data:first-child {
+  padding-bottom: 16px;
+  padding-top: 0;
+  border-bottom: 1px solid #424242;
+}
+
+.profile-page__buttons {
+  margin-top: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-page__button {
+  font-size: 13px;
+  line-height: 15.73px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.profile-page__button_edit {
+  color: #FFFFFF;
+  font-weight: 400;
+}
+
+.profile-page__button_logout {
+  color: #EE3465;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 1279px) {
+  .profile-page {
+    padding: 310px 0 70px 0;
+  }
+
+  .profile-page__user {
+    margin-top: 96px;
+  }
+
+  .profile-page__buttons {
+    margin-top: 210px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .profile-page {
+    padding: 144px 0 40px 0;
+  }
+
+  .profile-page__user {
+    margin-top: 80px;
+    width: 260px;
+  }
+
+  .profile-page__buttons {
+    margin-top: 379px;
+  }
+
+  .profile-page__button {
+    font-size: 12px;
+    line-height: 14.52px;
+  }
+
+}

@@ -1,0 +1,27 @@
+.main {
+  position: relative;
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 1140px;
+}
+
+@media screen and (max-width: 1279px) {
+  .wrapper {
+    width: 87vw;
+  }
+  .wrapper_movies {
+    width: 92.1875vw;
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  .wrapper {
+    width: 88.75vw;
+  }
+  .wrapper_movies {
+    width: 93.75vw;
+  }
+}

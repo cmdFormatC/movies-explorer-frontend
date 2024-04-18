@@ -1,0 +1,39 @@
+.filter__input {
+  position: absolute;
+  width: 1px;
+  clip: rect(0 0 0 0);
+  opacity: 0;
+}
+
+.filter__label {
+  position: relative;
+  display: block;
+  width: 36px;
+  height: 20px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 20px;
+  background-color: #343434;
+  cursor: pointer;
+}
+
+.filter__label::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #A0A0A0;
+  border-radius: 50%;
+  transition: left 0.3s;
+}
+
+.filter__input:checked + .filter__label {
+  background-color: #2BE080;
+}
+
+.filter__input:checked + .filter__label::before {
+  left: 22px;
+  background-color: #FFFFFF;
+}

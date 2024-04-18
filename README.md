@@ -1,1 +1,5 @@
-# movies-explorer-frontend
+### `npm start`
+
+Запуск проекта в режиме разработки
+
+Макет dark-5

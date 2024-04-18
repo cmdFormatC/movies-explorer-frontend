@@ -1,0 +1,9 @@
+@import url(./vendor/InterWeb/fonts.css);
+
+#root {
+  font-family: 'Inter', 'Arial', sans-serif;
+  line-height: 1;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
