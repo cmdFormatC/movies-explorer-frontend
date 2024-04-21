@@ -1,30 +1,78 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import Preloader from '../Preloader/Preloader';
+import { SavedMoviesContext } from "../../context/SavedMoviesContext";
 
+export default function MoviesCardList({ moviesList, isLoading, searchQuary, isSavedMoviesList, searchError, handleDeleteMovie, handleSaveMovie }) {
+  const [visibleCards, setVisibleCards] = useState(16);
+  const [cardsPerLoad, setCardsPerLoad] = useState(4);
+  const savedMoviesList = useContext(SavedMoviesContext);
+  useEffect(() => {
+    let timeoutId = null;
 
-export default function MoviesCardList() {
+    function updateCardCount() {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const width = window.innerWidth;
+        if (width >= 1280) {
+          setCardsPerLoad(4);
+          setVisibleCards(Math.floor(visibleCards / 4) * 4)
+        } else if (width < 1280) {
+          setCardsPerLoad(2);
+        }
+      }, 100);
+    }
+    window.addEventListener('resize', updateCardCount);
+
+    return () => {
+      window.removeEventListener('resize', updateCardCount);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  
+  const checkIsMovieSaved = (movieId) => {
+    const savedMoviesIds = savedMoviesList.map(movie => movie.movieId);
+    if (savedMoviesIds.includes(movieId)) {
+      return true
+    } else {
+      return false
+    }
+  }
+  const loadMoreCards = () => {
+    setVisibleCards(prev => prev + cardsPerLoad);
+  };
+
+  
+  const hasMoreCards = visibleCards < moviesList.length
+
   return (
     <section className='movies-list wrapper wrapper_movies'>
-      <div className='movies-list__container'>
-        <MoviesCard id='card1' />
-        <MoviesCard id='card2' />
-        <MoviesCard id='card3' />
-        <MoviesCard id='card4' />
-        <MoviesCard id='card5' />
-        <MoviesCard id='card6' />
-        <MoviesCard id='card7' />
-        <MoviesCard id='card8' />
-        <MoviesCard id='card9' />
-        <MoviesCard id='card10' />
-        <MoviesCard id='card11' />
-        <MoviesCard id='card12' />
-        <MoviesCard id='card13' />
-        <MoviesCard id='card14' />
-        <MoviesCard id='card15' />
-        <MoviesCard id='card16' />
-      </div>
-      <button className='movies-list__button' type='button'>Ещё</button>
+      {
+        (moviesList.length !== 0) ? (
+          isLoading ? (
+            <Preloader />
+          ) : moviesList.length > 0 ? (
+            <div className='movies-list__container'>
+              {moviesList.slice(0, visibleCards).map((movie, index) => (
+                <MoviesCard
+                  key={index}
+                  movie={movie}
+                  handleSaveMovie={handleSaveMovie}
+                  handleDeleteMovie={handleDeleteMovie}
+                  isSaved={checkIsMovieSaved(movie.id)}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className='movies-list__error'>{searchError ? searchError :''}</p>
+          )
+        ) : ''
+      }
+      {hasMoreCards && (
+        <button className='movies-list__button' type='button' onClick={loadMoreCards}>Ещё</button>
+      )}
     </section>
-  )
+  );
 }

@@ -8,16 +8,18 @@ import AboutMe from '../AboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
 import Footer from '../Footer/Footer';
 
-export default function Main() {
+export default function Main({ isAuth }) {
   return (
-    <main className="main">
-      <Header isAuth={false} isMain={true} />
-      <Promo />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
-      <Portfolio/>
+    <>
+      <Header isAuth={isAuth} isMain={true} />
+      <main className="main">
+        <Promo />
+        <AboutProject />
+        <Techs />
+        <AboutMe />
+        <Portfolio/>
+      </main>
       <Footer />
-    </main>
+    </>
   )
 }
