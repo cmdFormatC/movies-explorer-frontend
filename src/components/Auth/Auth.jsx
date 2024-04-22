@@ -2,7 +2,7 @@ import React from 'react'
 import './Auth.css';
 import logo from '../../images/logo.svg';
 import FormItem from '../FormItem/FormItem';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import useForm from "../../CustomHooks/useForm";
 import { FormApiErrorsContext } from "../../context/FormApiErrorsContext";
 
@@ -10,7 +10,13 @@ import { FormApiErrorsContext } from "../../context/FormApiErrorsContext";
 export default function Auth(props) {
   const  formError  = React.useContext(FormApiErrorsContext);
   const { values, errors, isValid, handleChange } = useForm();
-
+  let navigate = useNavigate();
+  React.useEffect(() => {
+    if (props.isAuth) {
+      navigate('/', { replace: true });
+    }
+  }, []);
+  
   function handleSubmit(e) {
     e.preventDefault();
     props.onSubmit(values);
@@ -18,7 +24,9 @@ export default function Auth(props) {
 
   return (
     <div className='auth'>
-        <img className='auth__logo' alt="Логотип" src={logo} />
+        <Link to='/' className='auth__main-link'>
+          <img className='auth__logo' alt="Логотип" src={logo} />
+        </Link>
         <h1 className='auth__title'>{props.greeten}</h1>
         <form onSubmit={handleSubmit} className='auth__form'>
           {props.formFields.map(field => (

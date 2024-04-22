@@ -2,7 +2,7 @@
 import { SHORT_MOVIE } from "./constants";
 
 export function handleMovieSearch(movies, searchQuery, isSavedMovies) {
-  const normalizeSearchQuery = searchQuery.toLowerCase().trim();
+  const normalizeSearchQuery = searchQuery ? searchQuery.toLowerCase().trim() : '';
   const result = movies.filter((movie) => {
     const normalizeNameRu = movie.nameRU.toLowerCase().trim();
     const normalizeNameEn = movie.nameEN.toLowerCase().trim();
@@ -23,12 +23,7 @@ export function handleMovieSearch(movies, searchQuery, isSavedMovies) {
   return result;
 }
 
-export function handleMovieFiltering(movies, isFilterOn, isSavedMovies) {
-  if (!isSavedMovies) {
-    localStorage.setItem("isMoviesFilterOn", isFilterOn);
-  } else {
-    localStorage.setItem("isSavedMoviesFilterOn", isFilterOn);
-  }
+export function handleMovieFiltering(movies, isFilterOn) {
   if (isFilterOn) {
     const result = movies.filter((movie) => movie.duration <= SHORT_MOVIE);
     return result;

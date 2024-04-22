@@ -12,6 +12,7 @@ export default function Profile({ onSubmit, onLogout, isEditing, setIsEditing}) 
   const  formError  = React.useContext(FormApiErrorsContext);
   const { values, errors, isValid, handleChange } = useForm();
   const [isCurrentUser, setUserDifference] = useState(true);
+  
   const canSubmit = useMemo(() => {
     return isValid && !isCurrentUser;
   }, [isValid, isCurrentUser]);

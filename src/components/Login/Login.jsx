@@ -3,7 +3,7 @@ import './Login.css';
 import { LOGIN_FIELDS } from '../../utils/constants';
 import Auth from '../Auth/Auth';
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin, isAuth }) {
   return (
     <main className='login'>
       <Auth
@@ -14,6 +14,7 @@ export default function Login({ onLogin }) {
         link="/signup"
         greeten="Рады видеть!"
         onSubmit={onLogin}
+        isAuth={isAuth}
        />
     </main>
   )

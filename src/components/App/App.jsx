@@ -35,13 +35,17 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchQuary, setSearchQuary] = useState('');
-  const [savedSearchQuary, setSavedSearchQuary] = useState('');
   const [savedMovies, setSavedMovies] = useState([]);
 
   React.useEffect(() => {
     handleTokenCheck();
     handleGetSavedMovies();
-    const isOnlyShort = localStorage.getItem('isShortFilterOn')
+    let isOnlyShort = JSON.parse(localStorage.getItem('isShortFilterOn'));
+
+    if (!isOnlyShort) {
+      isOnlyShort = false;
+    }
+    
     handleGetAllMovies(searchQuary, isOnlyShort);
   }, []);
   
@@ -49,66 +53,80 @@ function App() {
     setFormError('');
   }, [location]);
 
-  async function handleGetAllMovies(searhQuary, isOnlyShort) {
+  async function handleGetAllMovies(searchQuary, isOnlyShort) {
     setMoviesLoading(true);
-
-    if (!searhQuary) {
-      searhQuary = localStorage.getItem('lastSearchQuary')
+    console.log(isOnlyShort);
+  
+    if (!searchQuary) {
+      searchQuary = localStorage.getItem('lastSearchQuary');
     }
-
-    setSearchQuary(searhQuary)
-    try {
+    setSearchQuary(searchQuary);
+  
+    let moviesData = localStorage.getItem('movies');
+    if (!moviesData) {
       try {
-        const moviesData = await getMovies();
-        if (moviesData) {
-          const searhedMovies = handleMovieSearch(moviesData, searhQuary, false);
-          const filteredMovies = handleMovieFiltering(searhedMovies, isOnlyShort, false)
-          setMoviesList(filteredMovies);
-          
-          if (filteredMovies.length < 1) {
-            setSearchError('Ничего не найдено');
-          }
-          return filteredMovies;
-        } else {
-          setSearchError('Ничего не найдено');
-        }
-      } catch {
+        moviesData = await getMovies();
+        localStorage.setItem('movies', JSON.stringify(moviesData));
+      } catch (error) {
         setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+        console.error(error);
       }
-
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setMoviesLoading(false);
+    } else {
+      moviesData = JSON.parse(moviesData);
     }
+  
+    if (moviesData) {
+      const searchedMovies = handleMovieSearch(moviesData, searchQuary, isOnlyShort);
+      const filteredMovies = handleMovieFiltering(searchedMovies, isOnlyShort);
+      if(!searchQuary) {
+        setMoviesList([]);
+      } else {
+        setMoviesList(filteredMovies);
+      }
+  
+      if (filteredMovies.length < 1) {
+        setSearchError('Ничего не найдено');
+      }
+    } else {
+      setSearchError('Ничего не найдено');
+    }
+  
+    setMoviesLoading(false);
   }
 
-  async function handleGetSavedMovies(searhQuary, isOnlyShort) {
+  async function handleGetSavedMovies(searchQuery, isOnlyShort) {
     setMoviesLoading(true);
-    if (!searhQuary) {
-      searhQuary = localStorage.getItem('savedMoviesSearchQuery')
+    
+    if (!searchQuery) {
+      searchQuery = localStorage.getItem('savedMoviesSearchQuery');
     }
-    setSearchQuary(searhQuary)
-
-    try {
-      const moviesData = await mainApi.getSavedFilms();
-      if (moviesData) {
-        if (moviesData && searhQuary) {
-          const searhedMovies = handleMovieSearch(moviesData, searhQuary, true);
-          const filteredMovies = handleMovieFiltering(searhedMovies, isOnlyShort, true)
-          if (filteredMovies.length < 1) {
-            setSearchError('Ничего не найдено');
-          }
-          setSavedMovies(filteredMovies);
-        } else {
-          setSavedMovies(moviesData);
-        }
+    setSearchQuary(searchQuery);
+      let savedMoviesData = localStorage.getItem('savedMovies');
+    if (savedMoviesData) {
+      savedMoviesData = JSON.parse(savedMoviesData);
+    } else {
+      try {
+        savedMoviesData = await mainApi.getSavedFilms();
+        localStorage.setItem('savedMovies', JSON.stringify(savedMoviesData));
+      } catch (err) {
+        console.error(err);
+        setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+        setMoviesLoading(false);
+        return;
       }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setMoviesLoading(false);
     }
+      if (searchQuery) {
+      const searchedMovies = handleMovieSearch(savedMoviesData, searchQuery, true);
+      const filteredMovies = handleMovieFiltering(searchedMovies, isOnlyShort);
+      if (filteredMovies.length < 1) {
+        setSearchError('Ничего не найдено');
+      }
+      setSavedMovies(filteredMovies);
+    } else {
+      setSavedMovies(savedMoviesData);
+    }
+  
+    setMoviesLoading(false);
   };
 
   async function handleSaveMovie(movie) {
@@ -134,7 +152,6 @@ function App() {
     }
   }
 
-  // HANDLER DELETE MOVIES
   async function handleDeleteMovie(movie) {
     const savedMovie = savedMovies.find(
       (savedMovie) => savedMovie.movieId === movie.id || savedMovie.movieId === movie.movieId
@@ -175,7 +192,7 @@ function App() {
     mainApi.editUser(values)
     .then((res) => {
       setCurrentUser(res);
-      setFormError('');
+      setFormError('Данные сохранены.');
     })
     .catch((err) => {
       setIsEditingProfile(true)
@@ -284,9 +301,11 @@ function App() {
                     <Route path="/signup" element={<Register
                       onRegistr={handleRegistration}
                       onError={formError}
+                      isAuth={loggedIn}
                     />}  />
                     <Route path="/signin" element={<Login
                       onLogin={handleLogin}
+                      isAuth={loggedIn}
                     />}  />
                   <Route path="*" element={<NotFound />}  />
                 </Routes>

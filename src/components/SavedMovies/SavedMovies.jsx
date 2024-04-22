@@ -12,10 +12,6 @@ export default function SavedMovies({ handleGetSavedMovies, onSearch, isLoading,
   useEffect(() => {
     handleGetSavedMovies()
   }, [])
-  
-  const handleOnFilterClick = (condition) => {
-    handleGetSavedMovies(searchQuary, condition)
-  }
 
   return (
     <>
@@ -25,7 +21,6 @@ export default function SavedMovies({ handleGetSavedMovies, onSearch, isLoading,
           onSearch={onSearch}
           isFilterOn={isFilterOn}
           setFilter={setFilter}
-          onToggle={handleOnFilterClick}
         />
         <MoviesCardList
           searchError={searchError}
