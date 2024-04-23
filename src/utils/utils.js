@@ -2,6 +2,7 @@
 import { SHORT_MOVIE } from "./constants";
 
 export function handleMovieSearch(movies, searchQuery, isSavedMovies) {
+  if (!movies || (movies.lenght === 0)) return []
   const normalizeSearchQuery = searchQuery ? searchQuery.toLowerCase().trim() : '';
   const result = movies.filter((movie) => {
     const normalizeNameRu = movie.nameRU.toLowerCase().trim();
@@ -16,15 +17,14 @@ export function handleMovieSearch(movies, searchQuery, isSavedMovies) {
   if (!isSavedMovies) {
     localStorage.setItem("foundMovies", JSON.stringify(result));
     localStorage.setItem("lastSearchQuary", normalizeSearchQuery);
-  } else {
-    localStorage.setItem("savedMoviesSearchQuery", normalizeSearchQuery);
   }
 
   return result;
 }
 
 export function handleMovieFiltering(movies, isFilterOn) {
-  if (isFilterOn) {
+  if (!movies || (movies.lenght === 0)) return []
+  if (isFilterOn && movies) {
     const result = movies.filter((movie) => movie.duration <= SHORT_MOVIE);
     return result;
   } else {

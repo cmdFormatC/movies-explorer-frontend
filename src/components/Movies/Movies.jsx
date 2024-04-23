@@ -7,7 +7,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import {MoviesContext} from '../../context/MoviesContext'
 
 export default function Movies({ onSearch, isLoading, searchQuary, searchError, handleDeleteMovie, handleSaveMovie }) {
-  const moviesList = useContext(MoviesContext);
+  const { moviesList } = useContext(MoviesContext);
 
   return (
     <>

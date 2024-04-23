@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useLocation } from "react-router-dom";
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../Preloader/Preloader';
@@ -7,7 +8,8 @@ import { SavedMoviesContext } from "../../context/SavedMoviesContext";
 export default function MoviesCardList({ moviesList, isLoading, searchError, handleDeleteMovie, handleSaveMovie }) {
   const [visibleCards, setVisibleCards] = useState(16);
   const [cardsPerLoad, setCardsPerLoad] = useState(4);
-  const savedMoviesList = useContext(SavedMoviesContext);
+  const { savedMovies } = useContext(SavedMoviesContext);
+  const location = useLocation();
 
   const updateCardCount = () => {
     clearTimeout(window.updateCardCountTimeout);
@@ -26,8 +28,6 @@ export default function MoviesCardList({ moviesList, isLoading, searchError, han
         setCardsPerLoad(4);
         setVisibleCards(16);
       }
-
-      console.log('resize data', { width, visibleCards, cardsPerLoad });
     }, 100);
   }
 
@@ -44,7 +44,7 @@ export default function MoviesCardList({ moviesList, isLoading, searchError, han
   }, [moviesList]);
 
   const checkIsMovieSaved = (movieId) => {
-    const savedMoviesIds = savedMoviesList.map(movie => movie.movieId);
+    const savedMoviesIds = savedMovies.map(movie => movie.movieId);
     return savedMoviesIds.includes(movieId);
   }
 
@@ -56,28 +56,37 @@ export default function MoviesCardList({ moviesList, isLoading, searchError, han
 
   return (
     <section className='movies-list wrapper wrapper_movies'>
-      {moviesList.length !== 0 && (
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <div className='movies-list__container'>
-            {moviesList.slice(0, visibleCards).map((movie, index) => (
-              <MoviesCard
-                key={index}
-                movie={movie}
-                handleSaveMovie={handleSaveMovie}
-                handleDeleteMovie={handleDeleteMovie}
-                isSaved={checkIsMovieSaved(movie.id)}
-              />
-            ))}
-            
-            {searchError && <p className='movies-list__error'>{searchError}</p>}
-          </div>
-        )
-      )}
-      {hasMoreCards && (
+        { 
+          isLoading ? 
+            <Preloader />
+          : 
+          (moviesList.length !== 0 && (
+              <div className='movies-list__container'>
+                {moviesList.slice(0, (location.pathname === '/saved-movies' ? moviesList.length : visibleCards)).map((movie, index) => (
+                  <MoviesCard
+                    key={index}
+                    movie={movie}
+                    handleSaveMovie={handleSaveMovie}
+                    handleDeleteMovie={handleDeleteMovie}
+                    isSaved={checkIsMovieSaved(movie.id)}
+                  />
+                ))}
+              </div>
+          ))
+        }
+      {
+        searchError
+        ? 
+        <p className='movies-list__error'>{searchError}</p>
+        :
+        ''
+      }
+      {(hasMoreCards && location.pathname !== '/saved-movies')
+        ? 
         <button className='movies-list__button' type='button' onClick={loadMoreCards}>Ещё</button>
-      )}
+        :
+        ''
+      }
     </section>
   );
 }

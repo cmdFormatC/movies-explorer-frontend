@@ -1,2 +1,6 @@
-import React from 'react'
-export const MoviesContext = React.createContext();
+import {createContext} from 'react';
+
+export const MoviesContext = createContext({
+  moviesList: [],
+  setMoviesList: () => {}
+});

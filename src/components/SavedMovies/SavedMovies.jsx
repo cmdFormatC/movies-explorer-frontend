@@ -7,8 +7,8 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import { SavedMoviesContext } from "../../context/SavedMoviesContext";
 
 export default function SavedMovies({ handleGetSavedMovies, onSearch, isLoading, searchQuary, searchError, handleDeleteMovie }) {
-  const  savedMoviesList  = useContext(SavedMoviesContext);
-  const [isFilterOn, setFilter] = useState(false);
+  const { savedMovies } = useContext(SavedMoviesContext);
+  // const [isFilterOn, setFilter] = useState(false);
   useEffect(() => {
     handleGetSavedMovies()
   }, [])
@@ -19,15 +19,15 @@ export default function SavedMovies({ handleGetSavedMovies, onSearch, isLoading,
       <main className="movies">
         <SearchForm 
           onSearch={onSearch}
-          isFilterOn={isFilterOn}
-          setFilter={setFilter}
+          // isFilterOn={isFilterOn}
+          // setFilter={setFilter}
         />
         <MoviesCardList
           searchError={searchError}
           searchQuary={searchQuary}
           isSavedMoviesList={true}
           isLoading={isLoading}
-          moviesList={savedMoviesList}
+          moviesList={savedMovies}
           handleDeleteMovie={handleDeleteMovie}
         />
       </main>

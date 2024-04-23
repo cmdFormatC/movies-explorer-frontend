@@ -39,56 +39,71 @@ function App() {
 
   React.useEffect(() => {
     handleTokenCheck();
-    handleGetSavedMovies();
-    let isOnlyShort = JSON.parse(localStorage.getItem('isShortFilterOn'));
-
-    if (!isOnlyShort) {
-      isOnlyShort = false;
+    if (location.pathname === "/saved-movies") {
+      handleGetSavedMovies();
     }
-    
-    handleGetAllMovies(searchQuary, isOnlyShort);
+
+    if (location.pathname === "/movies" && localStorage.getItem("lastSearchQuary")) {
+      handleGetAllMovies(localStorage.getItem("lastSearchQuary"), JSON.parse(localStorage.getItem("isShortFilterOn")))
+    }
   }, []);
   
   React.useEffect(() => {
     setFormError('');
-  }, [location]);
+    setSearchError('');
+    
+    if (location.pathname === "/saved-movies") {
+      handleGetSavedMovies();
+    }
+    if (location.pathname === "/movies" && localStorage.getItem("lastSearchQuary")) {
+      handleGetAllMovies(localStorage.getItem("lastSearchQuary"), JSON.parse(localStorage.getItem("isShortFilterOn")))
+    }
+  }, [location.pathname]);
 
   async function handleGetAllMovies(searchQuary, isOnlyShort) {
     setMoviesLoading(true);
-    console.log(isOnlyShort);
-  
     if (!searchQuary) {
       searchQuary = localStorage.getItem('lastSearchQuary');
     }
     setSearchQuary(searchQuary);
   
-    let moviesData = localStorage.getItem('movies');
+    let moviesData = localStorage.getItem('AllMovies');
     if (!moviesData) {
       try {
         moviesData = await getMovies();
-        localStorage.setItem('movies', JSON.stringify(moviesData));
+        localStorage.setItem('AllMovies', JSON.stringify(moviesData));
+
+        if (!moviesData) {
+          setSearchError('Ничего не найдено');
+        } else {
+          setSearchError('')
+        }
+
       } catch (error) {
         setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
         console.error(error);
       }
+
     } else {
       moviesData = JSON.parse(moviesData);
     }
-  
+
     if (moviesData) {
-      const searchedMovies = handleMovieSearch(moviesData, searchQuary, isOnlyShort);
+      const searchedMovies = handleMovieSearch(moviesData, searchQuary, false);
+      localStorage.setItem('movies', JSON.stringify(searchedMovies));
       const filteredMovies = handleMovieFiltering(searchedMovies, isOnlyShort);
-      if(!searchQuary) {
+      
+      if (!searchQuary) {
         setMoviesList([]);
       } else {
         setMoviesList(filteredMovies);
       }
   
-      if (filteredMovies.length < 1) {
+      if (filteredMovies.length === 0) {
         setSearchError('Ничего не найдено');
+      } else {
+        setSearchError('')
       }
-    } else {
-      setSearchError('Ничего не найдено');
     }
   
     setMoviesLoading(false);
@@ -98,29 +113,34 @@ function App() {
     setMoviesLoading(true);
     
     if (!searchQuery) {
-      searchQuery = localStorage.getItem('savedMoviesSearchQuery');
+      searchQuery = '';
     }
     setSearchQuary(searchQuery);
-      let savedMoviesData = localStorage.getItem('savedMovies');
+      let savedMoviesData = localStorage.getItem('AllSavedMovies');
     if (savedMoviesData) {
       savedMoviesData = JSON.parse(savedMoviesData);
     } else {
       try {
         savedMoviesData = await mainApi.getSavedFilms();
-        localStorage.setItem('savedMovies', JSON.stringify(savedMoviesData));
+        localStorage.setItem('AllSavedMovies', JSON.stringify(savedMoviesData));
       } catch (err) {
         console.error(err);
         setSearchError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-        setMoviesLoading(false);
         return;
       }
     }
-      if (searchQuery) {
+
+    if (searchQuery) {
       const searchedMovies = handleMovieSearch(savedMoviesData, searchQuery, true);
+      localStorage.setItem('savedMovies', JSON.stringify(searchedMovies));
       const filteredMovies = handleMovieFiltering(searchedMovies, isOnlyShort);
-      if (filteredMovies.length < 1) {
+
+      if (filteredMovies.length === 0) {
         setSearchError('Ничего не найдено');
+      } else {
+        setSearchError('')
       }
+
       setSavedMovies(filteredMovies);
     } else {
       setSavedMovies(savedMoviesData);
@@ -146,6 +166,7 @@ function App() {
       });
       if (movieData) {
         setSavedMovies([movieData, ...savedMovies]);
+        localStorage.setItem('AllSavedMovies', JSON.stringify([movieData, ...savedMovies]));
       }
     } catch (err) {
       console.error(err);
@@ -156,6 +177,7 @@ function App() {
     const savedMovie = savedMovies.find(
       (savedMovie) => savedMovie.movieId === movie.id || savedMovie.movieId === movie.movieId
     );
+    
     try {
       const data = await mainApi.deleteFilm(savedMovie._id);
       if (data) {
@@ -163,6 +185,13 @@ function App() {
           state.filter((movie) => movie._id !== savedMovie._id)
         );
       }
+      if (savedMovies) {
+        const savedMovieFiltered = savedMovies.filter((movie) => movie._id !== savedMovie._id)
+        localStorage.setItem('AllSavedMovies', JSON.stringify(savedMovieFiltered));
+      } else {
+        localStorage.setItem('AllSavedMovies', JSON.stringify([]));
+      }
+      
     } catch (err) {
       console.error(err);
     }
@@ -265,8 +294,8 @@ function App() {
         ) : (
         <CurrentUserContext.Provider value={currentUser}>
           <FormApiErrorsContext.Provider value={formError}>
-            <MoviesContext.Provider value={moviesList}>
-              <SavedMoviesContext.Provider value={savedMovies}>
+            <MoviesContext.Provider value={{moviesList, setMoviesList}}>
+              <SavedMoviesContext.Provider value={{ savedMovies, setSavedMovies }}>
                 <Routes>
                   <Route path="/" element={<Main isAuth={loggedIn} />}  />
                   <Route path="/saved-movies"
