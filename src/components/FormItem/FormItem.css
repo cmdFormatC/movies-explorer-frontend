@@ -28,13 +28,12 @@
   box-sizing: border-box;
 }
 
-
 .form-item__input_error {
   color: #EE3465;
 }
 
 .form-item__error-msg {
-  height: 10px;
+  height: 12px;
   opacity: 0;
   font-size: 10px;
   font-weight: 400;
@@ -43,6 +42,6 @@
   color: #EE3465;
 }
 
-.form-item__input_error + .form-item__error-msg {
+.form-item__error-msg_activ {
   opacity: 1;
 }

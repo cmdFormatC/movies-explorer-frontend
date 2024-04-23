@@ -10,7 +10,7 @@ import Navigation from '../Navigation/Navigation';
 
 export default function Header({ isAuth, isMain }) {
   const [ isOpen, setIsOpen ] = React.useState(false);
-
+  
   const handleMenuOpen = () => {
     if (isAuth) {
       setIsOpen(true);

@@ -6,7 +6,7 @@
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: flex-end;
-  z-index: 15;
+  z-index: 30;
 }
 
 .navigation__menu {
